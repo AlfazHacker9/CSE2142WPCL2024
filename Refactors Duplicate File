@@ -1,0 +1,11 @@
+public class Constants {
+    // File paths
+    public static final String EMPLOYEE_FILE = "employees.txt";
+    
+    // Other constants (e.g., for messages)
+    public static final String LOADING_MESSAGE = "Loading data ...";
+    public static final String DATA_LOADED_MESSAGE = "Data Loaded.";
+    public static final String EMPLOYEE_FOUND_MESSAGE = "Employee found!";
+    public static final String DATA_UPDATED_MESSAGE = "Data Updated.";
+    public static final String DATA_DELETED_MESSAGE = "Data Deleted.";
+}
