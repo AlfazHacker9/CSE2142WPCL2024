@@ -1,0 +1,115 @@
+import java.io.*;
+import java.util.*;
+
+public class EmployeeManager {
+    public static void main(String[] args) {
+        if (args.length == 0) {
+            System.out.println("No arguments provided.");
+            return;
+        }
+
+        // Check arguments
+        if (args[0].equals("l")) {
+            System.out.println(Constants.LOADING_MESSAGE);
+            try {
+                List<String> employees = readFromFile();
+                for (String emp : employees) {
+                    System.out.println(emp);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println(Constants.DATA_LOADED_MESSAGE);
+        } else if (args[0].equals("s")) {
+            System.out.println(Constants.LOADING_MESSAGE);
+            try {
+                List<String> employees = readFromFile();
+                Random rand = new Random();
+                int idx = rand.nextInt(employees.size());
+                System.out.println(employees.get(idx));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println(Constants.DATA_LOADED_MESSAGE);
+        } else if (args[0].contains("+")) {
+            System.out.println(Constants.LOADING_MESSAGE);
+            try {
+                String newEmployee = args[0].substring(1);
+                writeToFile(newEmployee, true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println(Constants.DATA_LOADED_MESSAGE);
+        } else if (args[0].contains("?")) {
+            System.out.println(Constants.LOADING_MESSAGE);
+            try {
+                List<String> employees = readFromFile();
+                String employeeToFind = args[0].substring(1);
+                if (employees.contains(employeeToFind)) {
+                    System.out.println(Constants.EMPLOYEE_FOUND_MESSAGE);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println(Constants.DATA_LOADED_MESSAGE);
+        } else if (args[0].contains("c")) {
+            System.out.println(Constants.LOADING_MESSAGE);
+            try {
+                List<String> employees = readFromFile();
+                String employeeLine = String.join(",", employees);
+                System.out.println(employeeLine.length() + " characters in total.");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println(Constants.DATA_LOADED_MESSAGE);
+        } else if (args[0].contains("u")) {
+            System.out.println(Constants.LOADING_MESSAGE);
+            try {
+                List<String> employees = readFromFile();
+                String updatedEmployee = args[0].substring(1);
+                for (int i = 0; i < employees.size(); i++) {
+                    if (employees.get(i).equals(updatedEmployee)) {
+                        employees.set(i, "Updated");
+                    }
+                }
+                writeToFile(employees, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println(Constants.DATA_UPDATED_MESSAGE);
+        } else if (args[0].contains("d")) {
+            System.out.println(Constants.LOADING_MESSAGE);
+            try {
+                List<String> employees = readFromFile();
+                String employeeToDelete = args[0].substring(1);
+                employees.remove(employeeToDelete);
+                writeToFile(employees, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println(Constants.DATA_DELETED_MESSAGE);
+        }
+    }
+
+    // Method to read employee data from file
+    private static List<String> readFromFile() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(Constants.EMPLOYEE_FILE)));
+        String line = reader.readLine();
+        reader.close();
+        return new ArrayList<>(Arrays.asList(line.split(",")));
+    }
+
+    // Method to write employee data to file (either appending or overwriting)
+    private static void writeToFile(List<String> employees, boolean append) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(Constants.EMPLOYEE_FILE, append));
+        writer.write(String.join(",", employees));
+        writer.close();
+    }
+
+    // Overloaded method to append a new employee name to the file
+    private static void writeToFile(String newEmployee, boolean append) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(Constants.EMPLOYEE_FILE, append));
+        writer.write(", " + newEmployee);
+        writer.close();
+    }
+}
